@@ -2,6 +2,16 @@
 
 A repository of mods and fixes for 7KPP.
 
+## Installation
+
+1. Download the latest release from the releases page (TODO) and ensure you have a matching version of 7KPP.
+2. Select which mods you want to install:
+   - `zz_fixscreens` fixes some buggy menus, especially for gamepad/controller input
+   - `zz_statnotify` shows a notification when a stat is changed
+3. Copy the .rpy and .rpyc files for the chosen mods into the game's "game" directory.
+   - on macOS, this is inside the 7KPP.app bundle at "Contents/Resources/autorun/game"
+   - on Linux or Windows, this is in the game directory of your install
+
 ## Development
 
 Only tested on macOS.
@@ -22,9 +32,3 @@ Only tested on macOS.
 5. Run `make run` to test the game
 6. Run `make patches` to save your script changes in non-gitignored files
 7. Run `make dist` to create mod files that can be installed into a preexisting install of the game
-
-## Installation
-
-TODO create a patcher tool for non-developers.
-
-For now, follow the Development steps above, then take the files from step 7 and place them inside the "game" directory of any 7KPP install. If you're on macOS, this is inside the 7KPP.app bundle at "Contents/Resources/autorun/game". On Linux or Windows, this is in the game directory of your install.

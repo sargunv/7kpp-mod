@@ -1,48 +1,12 @@
-diff -x *.rpyc -x .DS_Store -x saves -x cache --speed-large-files -ruN extract/game/screens.rpy project/game/screens.rpy
---- extract/game/screens.rpy	2024-07-22 19:29:56
-+++ project/game/screens.rpy	2024-07-22 20:07:23
-@@ -1041,10 +1041,10 @@
-         ground "images/yourpage_idle.png"
-         idle "images/yourpage_idle.png"
-         hover "images/yourpage_hover.png"
--        hotspot (71, 59, 265, 600) action ui.callsinnewcontext("profile_screen_label")
--        hotspot (268, 31, 451, 506) action ui.callsinnewcontext("journal_screen_label")
--        hotspot (459, 35, 631, 402) action ui.callsinnewcontext("ppl1_screen_label")
--        hotspot (624, 34, 811, 310) action ui.callsinnewcontext("cal1_screen_label")
-+        hotspot (71, 59, 194, 541) action ui.callsinnewcontext("profile_screen_label")
-+        hotspot (268, 31, 183, 475) action ui.callsinnewcontext("journal_screen_label")
-+        hotspot (459, 35, 172, 367) action ui.callsinnewcontext("ppl1_screen_label")
-+        hotspot (631, 34, 180, 276) action ui.callsinnewcontext("cal1_screen_label")
-         hotspot (1, 1, 145, 50) action Return()
- label ppl1_screen_label:
-     call screen ppl1_screen
-@@ -1277,10 +1277,10 @@
-     imagemap:
-         auto "img/gui/bgs/splash_%s.png"        
-         hotspot (300, 275, 200, 40) action Start()
--        hotspot (300, 315, 200, 30) action ShowMenu("load")
--        hotspot (300, 340, 200, 30) action ShowMenu("preferences")
--        hotspot (300, 370, 200, 30) action ShowMenu("bonus")
--        hotspot (300, 390, 200, 30) action Quit(confirm=False)
-+        hotspot (300, 315, 200, 25) action ShowMenu("load")
-+        hotspot (300, 340, 200, 25) action ShowMenu("preferences")
-+        hotspot (300, 365, 200, 25) action ShowMenu("bonus")
-+        hotspot (300, 390, 200, 25) action Quit(confirm=False)
- 
- init -2:
- 
-@@ -1640,14 +1640,14 @@
- 
-     imagemap:
-         auto "img/gui/quick/quickmenuclear_%s.png"        
--        hotspot (135, 570, 60, 30) action Rollback()
--        hotspot (200, 570, 50, 30) action ShowMenu('save')
--        hotspot (265, 570, 85, 30) action QuickSave()
--        hotspot (360, 570, 85, 30) action QuickLoad()
--        hotspot (460, 570, 55, 30) action ShowMenu('load')
--        hotspot (525, 570, 60, 30) action Skip()
--        hotspot (585, 570, 50, 30) action Preference("auto-forward", "toggle")
--        hotspot (650, 570, 60, 30) action ShowMenu('preferences')
+diff -x *.rpyc -x .DS_Store -x saves -x cache --speed-large-files -ruN extract/game/zz_fixscreens.rpy project/game/zz_fixscreens.rpy
+--- extract/game/zz_fixscreens.rpy	1969-12-31 16:00:00
++++ project/game/zz_fixscreens.rpy	2024-07-22 21:26:18
+@@ -0,0 +1,37 @@
++# fix focus mask
++
++screen quick_menu():
++    imagemap:
++        auto "img/gui/quick/quickmenuclear_%s.png"        
 +        hotspot (135, 570, 60, 30) focus_mask None action Rollback()
 +        hotspot (200, 570, 50, 30) focus_mask None action ShowMenu('save')
 +        hotspot (265, 570, 85, 30) focus_mask None action QuickSave()
@@ -51,6 +15,88 @@ diff -x *.rpyc -x .DS_Store -x saves -x cache --speed-large-files -ruN extract/g
 +        hotspot (525, 570, 60, 30) focus_mask None action Skip()
 +        hotspot (585, 570, 50, 30) focus_mask None action Preference("auto-forward", "toggle")
 +        hotspot (650, 570, 60, 30) focus_mask None action ShowMenu('preferences')
- 
- init -2:
-     style quick_button:
++
++
++# fix overlapping hotspots
++
++screen main_menu():
++    tag menu
++    imagemap:
++        auto "img/gui/bgs/splash_%s.png"        
++        hotspot (300, 275, 200, 40) action Start()
++        hotspot (300, 315, 200, 25) action ShowMenu("load")
++        hotspot (300, 340, 200, 25) action ShowMenu("preferences")
++        hotspot (300, 365, 200, 25) action ShowMenu("bonus")
++        hotspot (300, 390, 200, 25) action Quit(confirm=False)
++
++screen yourpage_screen:
++    imagemap:   
++        ground "images/yourpage_idle.png"
++        idle "images/yourpage_idle.png"
++        hover "images/yourpage_hover.png"
++        hotspot (71, 59, 194, 541) action ui.callsinnewcontext("profile_screen_label")
++        hotspot (268, 31, 183, 475) action ui.callsinnewcontext("journal_screen_label")
++        hotspot (459, 35, 172, 367) action ui.callsinnewcontext("ppl1_screen_label")
++        hotspot (631, 34, 180, 276) action ui.callsinnewcontext("cal1_screen_label")
++        hotspot (1, 1, 145, 50) action Return()
+diff -x *.rpyc -x .DS_Store -x saves -x cache --speed-large-files -ruN extract/game/zz_statnotify.rpy project/game/zz_statnotify.rpy
+--- extract/game/zz_statnotify.rpy	1969-12-31 16:00:00
++++ project/game/zz_statnotify.rpy	2024-07-22 21:26:16
+@@ -0,0 +1,57 @@
++init python:
++    MONITORED_STATS = {
++        # profile
++        "gold": "Gold",
++        # skills
++        "beauty": "Beauty",
++        "courage": "Courage",
++        "slfdf": "Self Defense",
++        "intel": "Intelligence",
++        "ettiq": "Etiquette",
++        "charm": "Charm",
++        "cun": "Cunning",
++        "cha": "Charisma",
++        "insight": "Insight",
++        "leader": "Leadership",
++        "eloqu": "Eloquence",
++        "manip": "Manipulation",
++        "grace": "Grace",
++        "poise": "Poise",
++        # personality
++        "humble": "Humble",
++        "noble": "Noble",
++        "subtle": "Subtle",
++        "imaginative": "Imaginative",
++        "social": "Social",
++        "dependent": "Dependent",
++        "compassionate": "Compassionate",
++        "emotional": "Emotional",
++        "romantic": "Romantic",
++        "ambitious": "Ambitious",
++        "traditional": "Traditional",
++        "methodical": "Methodical",
++        "ethical": "Ethical",
++        # knowledge
++        "his": "History",
++        "pol": "Politics",
++        "ss": "Street Smarts",
++        "war": "Warfare",
++        "prac": "Practical",
++        "ppl": "People",
++        "aca": "Academic",
++        "anipla": "Flora & Fauna",
++        "secrets": "Secrets",
++        # TODO relationships
++        # TODO approval
++    }
++    prev_stats = {}
++    def check_stat_change():
++        global prev_stats
++        current_stats = {stat: getattr(store, stat) for stat in MONITORED_STATS.keys()}
++        for stat, value in current_stats.items():
++            prev_value = prev_stats.get(stat)
++            if prev_value is not None and prev_value != value:
++                delta = value - prev_value
++                renpy.notify("{} {:+}".format(MONITORED_STATS[stat], delta))
++        prev_stats = current_stats
++    config.python_callbacks.append(check_stat_change)

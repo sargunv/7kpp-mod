@@ -21,8 +21,11 @@ run:
 dist: compile
 	rm -rf dist
 	mkdir -p dist
-	cp project/game/screens.rpy dist
-	cp project/game/screens.rpyc dist
+
+	cp project/game/zz_fixscreens.rpy dist
+	cp project/game/zz_fixscreens.rpyc dist
+	cp project/game/zz_statnotify.rpy dist
+	cp project/game/zz_statnotify.rpyc dist
 
 clean:
 	rm -rf extract project dist
