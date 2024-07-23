@@ -1,0 +1,56 @@
+diff -x *.rpyc -x .DS_Store -x saves -x cache --speed-large-files -ruN extract/game/screens.rpy project/game/screens.rpy
+--- extract/game/screens.rpy	2024-07-22 19:29:56
++++ project/game/screens.rpy	2024-07-22 20:07:23
+@@ -1041,10 +1041,10 @@
+         ground "images/yourpage_idle.png"
+         idle "images/yourpage_idle.png"
+         hover "images/yourpage_hover.png"
+-        hotspot (71, 59, 265, 600) action ui.callsinnewcontext("profile_screen_label")
+-        hotspot (268, 31, 451, 506) action ui.callsinnewcontext("journal_screen_label")
+-        hotspot (459, 35, 631, 402) action ui.callsinnewcontext("ppl1_screen_label")
+-        hotspot (624, 34, 811, 310) action ui.callsinnewcontext("cal1_screen_label")
++        hotspot (71, 59, 194, 541) action ui.callsinnewcontext("profile_screen_label")
++        hotspot (268, 31, 183, 475) action ui.callsinnewcontext("journal_screen_label")
++        hotspot (459, 35, 172, 367) action ui.callsinnewcontext("ppl1_screen_label")
++        hotspot (631, 34, 180, 276) action ui.callsinnewcontext("cal1_screen_label")
+         hotspot (1, 1, 145, 50) action Return()
+ label ppl1_screen_label:
+     call screen ppl1_screen
+@@ -1277,10 +1277,10 @@
+     imagemap:
+         auto "img/gui/bgs/splash_%s.png"        
+         hotspot (300, 275, 200, 40) action Start()
+-        hotspot (300, 315, 200, 30) action ShowMenu("load")
+-        hotspot (300, 340, 200, 30) action ShowMenu("preferences")
+-        hotspot (300, 370, 200, 30) action ShowMenu("bonus")
+-        hotspot (300, 390, 200, 30) action Quit(confirm=False)
++        hotspot (300, 315, 200, 25) action ShowMenu("load")
++        hotspot (300, 340, 200, 25) action ShowMenu("preferences")
++        hotspot (300, 365, 200, 25) action ShowMenu("bonus")
++        hotspot (300, 390, 200, 25) action Quit(confirm=False)
+ 
+ init -2:
+ 
+@@ -1640,14 +1640,14 @@
+ 
+     imagemap:
+         auto "img/gui/quick/quickmenuclear_%s.png"        
+-        hotspot (135, 570, 60, 30) action Rollback()
+-        hotspot (200, 570, 50, 30) action ShowMenu('save')
+-        hotspot (265, 570, 85, 30) action QuickSave()
+-        hotspot (360, 570, 85, 30) action QuickLoad()
+-        hotspot (460, 570, 55, 30) action ShowMenu('load')
+-        hotspot (525, 570, 60, 30) action Skip()
+-        hotspot (585, 570, 50, 30) action Preference("auto-forward", "toggle")
+-        hotspot (650, 570, 60, 30) action ShowMenu('preferences')
++        hotspot (135, 570, 60, 30) focus_mask None action Rollback()
++        hotspot (200, 570, 50, 30) focus_mask None action ShowMenu('save')
++        hotspot (265, 570, 85, 30) focus_mask None action QuickSave()
++        hotspot (360, 570, 85, 30) focus_mask None action QuickLoad()
++        hotspot (460, 570, 55, 30) focus_mask None action ShowMenu('load')
++        hotspot (525, 570, 60, 30) focus_mask None action Skip()
++        hotspot (585, 570, 50, 30) focus_mask None action Preference("auto-forward", "toggle")
++        hotspot (650, 570, 60, 30) focus_mask None action ShowMenu('preferences')
+ 
+ init -2:
+     style quick_button:
