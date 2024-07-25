@@ -1,7 +1,7 @@
 diff -x *.rpyc -x .DS_Store -x saves -x cache --speed-large-files -ruN extract/game/zz_fixscreens.rpy project/game/zz_fixscreens.rpy
 --- extract/game/zz_fixscreens.rpy	1969-12-31 16:00:00
-+++ project/game/zz_fixscreens.rpy	2024-07-22 21:26:18
-@@ -0,0 +1,37 @@
++++ project/game/zz_fixscreens.rpy	2024-07-25 01:35:16
+@@ -0,0 +1,36 @@
 +# fix focus mask
 +
 +screen quick_menu():
@@ -15,7 +15,6 @@ diff -x *.rpyc -x .DS_Store -x saves -x cache --speed-large-files -ruN extract/g
 +        hotspot (525, 570, 60, 30) focus_mask None action Skip()
 +        hotspot (585, 570, 50, 30) focus_mask None action Preference("auto-forward", "toggle")
 +        hotspot (650, 570, 60, 30) focus_mask None action ShowMenu('preferences')
-+
 +
 +# fix overlapping hotspots
 +
@@ -39,12 +38,63 @@ diff -x *.rpyc -x .DS_Store -x saves -x cache --speed-large-files -ruN extract/g
 +        hotspot (459, 35, 172, 367) action ui.callsinnewcontext("ppl1_screen_label")
 +        hotspot (631, 34, 180, 276) action ui.callsinnewcontext("cal1_screen_label")
 +        hotspot (1, 1, 145, 50) action Return()
+diff -x *.rpyc -x .DS_Store -x saves -x cache --speed-large-files -ruN extract/game/zz_quickchoice.rpy project/game/zz_quickchoice.rpy
+--- extract/game/zz_quickchoice.rpy	1969-12-31 16:00:00
++++ project/game/zz_quickchoice.rpy	2024-07-25 02:19:05
+@@ -0,0 +1,44 @@
++init python:
++    style.menu_caption.drop_shadow = (1, 1)
++    style.menu_caption.drop_shadow_color = "#000000FF"
++    style.menu_caption.size = 18
++    style.menu_caption.text_align = 0.5
++    config.narrator_menu = False
++
++screen choice:
++    window:
++        style "menu_window"
++        xalign 0.5
++        yalign 0.5
++        vbox:
++            style "menu"
++            spacing 2
++
++            $has_caption = False
++
++            for _, action, _ in items:
++                if not action:
++                    $has_caption = True
++
++            if not has_caption and store._last_say_what:
++                text store._last_say_what style "menu_caption"
++
++            $idx = 0
++            $total = len(items)
++
++            for caption, action, chosen in items:
++                if action:
++                    $idx += 1
++                    if idx == 10:
++                        $idx = 0
++                    button:
++                        xalign 0.5
++                        action action
++                        style "menu_choice_button"
++                        if total <= 10:
++                            text "{b}[[[idx]]{/b} [caption]" style "menu_choice"
++                            keysym str(idx)
++                        else:
++                            text caption style "menu_choice"
++                else:
++                    text caption style "menu_caption"
 diff -x *.rpyc -x .DS_Store -x saves -x cache --speed-large-files -ruN extract/game/zz_statnotify.rpy project/game/zz_statnotify.rpy
 --- extract/game/zz_statnotify.rpy	1969-12-31 16:00:00
-+++ project/game/zz_statnotify.rpy	2024-07-22 21:26:16
-@@ -0,0 +1,57 @@
++++ project/game/zz_statnotify.rpy	2024-07-25 01:45:28
+@@ -0,0 +1,157 @@
++init python in zz_statnotify:
++    pass
++
 +init python:
-+    MONITORED_STATS = {
++    zz_statnotify.MONITORED_STATS = {
 +        # profile
 +        "gold": "Gold",
 +        # skills
@@ -86,17 +136,114 @@ diff -x *.rpyc -x .DS_Store -x saves -x cache --speed-large-files -ruN extract/g
 +        "aca": "Academic",
 +        "anipla": "Flora & Fauna",
 +        "secrets": "Secrets",
-+        # TODO relationships
-+        # TODO approval
++        # approval
++        "svk_approve": "Skalt Approval",
++        "well_approve": "Wellin Approval",
++        "hise_approve": "Hise Approval",
++        "cor_approve": "Corval Approval",
++        "jiy_approve": "Jiyel Approval",
++        "arl_approve": "Arland Approval",
++        "revroy_approve": "Revair Approval",
++        "rebel_approve": "Rebels' Approval",
++        "hist_approve": "Historians' Approval",
++        "weaver_approve": "Weavers' Approval",
++        "com_approve": "Commoners' Approval",
++        "merch_approve": "Merchants' Approval",
++        "art_approve": "Artists' Approval",
 +    }
-+    prev_stats = {}
++
++    zz_statnotify.MONITORED_STATS.update(
++        {
++            "{}_{}".format(nk, rk): "{} {}".format(nv, rv)
++            for nk, nv in {
++                "ana": "Anaele",
++                "lisle": "Lisle",
++                "hamin": "Hamin",
++                "zar": "Zarad",
++                "jar": "Jarrod",
++                "gis": "Gisette",
++                "ed": "Lyon",
++                "clar": "Clarmont",
++                "ria": "Ria",
++                "wood": "Woodly",
++                "em": "Emmett",
++                "jasper": "Jasper",
++                "pen": "Penelope",
++                "cord": "Cordelia",
++                "ava": "Avalie",
++                "blain": "Blain",
++                "say": "Sayra",
++                "yvette": "Yvette",
++                "leala": "Leala",
++                "greer": "Greer",
++                "kade": "Kade",
++            }.items()
++            for rk, rv in {
++                "friend": "Friendship",
++                "rival": "Rivalry",
++                "romance": "Romance",
++                "respect": "Respect",
++            }.items()
++        }
++    )
++
 +    def check_stat_change():
-+        global prev_stats
-+        current_stats = {stat: getattr(store, stat) for stat in MONITORED_STATS.keys()}
++        prev_stats = getattr(zz_statnotify, "prev_stats", {})
++        current_stats = {
++            stat: value
++            for stat, value in (
++                (stat, getattr(store, stat, None))
++                for stat in zz_statnotify.MONITORED_STATS.keys()
++            )
++            if value is not None
++        }
++
++        if not hasattr(zz_statnotify, "notices"):
++            zz_statnotify.notices = []
++
 +        for stat, value in current_stats.items():
 +            prev_value = prev_stats.get(stat)
 +            if prev_value is not None and prev_value != value:
-+                delta = value - prev_value
-+                renpy.notify("{} {:+}".format(MONITORED_STATS[stat], delta))
-+        prev_stats = current_stats
++                msg = "{} {:+}".format(zz_statnotify.MONITORED_STATS[stat], value - prev_value)
++                notice_count = getattr(zz_statnotify, "notice_count", 0)
++                zz_statnotify.notices.append(
++                    (
++                        "stat_notice_{}".format(notice_count),
++                        {
++                            "msg": msg,
++                            "bgcolor": "E5393560" if value > prev_value else "3949AB60"
++                        },
++                    )
++                )
++                zz_statnotify.notice_count = notice_count + 1
++
++        zz_statnotify.prev_stats = current_stats
++    
++    def process_notices():
++        notice_cooldown = getattr(zz_statnotify, "notice_cooldown", 0)
++        notices = getattr(zz_statnotify, "notices", [])
++    
++        if notice_cooldown > 0:
++            zz_statnotify.notice_cooldown -= 1
++        elif len(notices) > 0:
++            zz_statnotify.notice_cooldown = 6
++            notice_tag, notice_args = zz_statnotify.notices.pop(0)
++            renpy.show(notice_tag, what=stat_notice(**notice_args), zorder=1000, layer="screens")
++            renpy.restart_interaction()
++
 +    config.python_callbacks.append(check_stat_change)
++    config.periodic_callbacks.append(process_notices)
++
++transform stat_notice(msg, bgcolor):
++    Window(Text(" " + msg + " ", size=12), "frame", background=Solid(bgcolor))
++
++    xalign 0.5 yalign 0.8 alpha 0.0
++    
++    parallel:
++        linear 3 yalign 0.2
++    parallel:
++        linear 0.5 alpha 1.0
++    parallel:
++        pause 2.5
++        linear 0.5 alpha 0.0
++        Null()

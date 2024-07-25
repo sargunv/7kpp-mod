@@ -8,6 +8,7 @@ A repository of mods and fixes for 7KPP.
 2. Select which mods you want to install:
    - `zz_fixscreens` fixes some buggy menus, especially for gamepad/controller input
    - `zz_statnotify` shows a notification when a stat is changed
+   - `zz_quickchoice` adds numeric keyboard shortcuts to the choice menu, and displays the last line of text along with the menu
 3. Copy the .rpy and .rpyc files for the chosen mods into the game's "game" directory.
    - on macOS, this is inside the 7KPP.app bundle at "Contents/Resources/autorun/game"
    - on Linux or Windows, this is in the game directory of your install

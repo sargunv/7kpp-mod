@@ -26,6 +26,8 @@ dist: compile
 	cp project/game/zz_fixscreens.rpyc dist
 	cp project/game/zz_statnotify.rpy dist
 	cp project/game/zz_statnotify.rpyc dist
+	cp project/game/zz_quickchoice.rpy dist
+	cp project/game/zz_quickchoice.rpyc dist
 
 clean:
 	rm -rf extract project dist
