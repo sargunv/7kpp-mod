@@ -1,7 +1,11 @@
 .PHONY: initialize patches compile run dist clean
 
+renpy_path = ./renpy-7.0.0-sdk/renpy.sh
+archive_path = ./original/7KPP.app/Contents/Resources/autorun/game/archive.rpa
+
 initialize:
-	./scripts/rpatool -x -o extract/game original/7KPP.app/Contents/Resources/autorun/game/archive.rpa
+	xattr -cr $(renpy_path)
+	./scripts/rpatool -x -o extract/game $(archive_path)
 	rm -rf project
 	mkdir -p project
 	cp -r extract/game project/game
@@ -13,10 +17,10 @@ patches:
 	diff -x '*.rpyc' -x '.DS_Store' -x 'saves' -x cache --speed-large-files -ruN extract/game project/game > patches/patch.diff || true
 
 compile:
-	./renpy-7.7.3-sdk/renpy.sh project compile
+	$(renpy_path) project compile
 
 run:
-	./renpy-7.7.3-sdk/renpy.sh project run
+	$(renpy_path) project run
 
 dist: compile
 	rm -rf dist

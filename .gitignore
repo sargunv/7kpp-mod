@@ -2,5 +2,5 @@ original/*
 extract/*
 project/*
 dist/*
-renpy-7.7.3-sdk/*
+renpy-*-sdk/*
 !/**/.gitkeep
