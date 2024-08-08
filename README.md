@@ -43,14 +43,14 @@ Only tested on macOS. Should be adaptable to other platforms with minor changes.
 
 ### Pre-requisites
 
-- [Ren'Py SDK 7.0.0][sdk]
-- A copy of [7KPP.app][7kpp] EA v1.11 for macOS
+- [Ren'Py SDK 7.4.11][sdk]
+- A copy of [7KPP.app][7kpp] EA v1.12 for macOS
 - Make (`brew install make`)
 - Python 3 (`brew install python3`) (to run rpatool)
 
 ### Workflow
 
-1. [Download renpy-7.0.0-sdk][sdk] into the root of this repository
+1. [Download renpy-7.4.11-sdk][sdk] into the root of this repository
 2. [Download 7KPP.app][7kpp] into the "original" directory of this repository
 3. Run `make initialize` to extract the project
 4. Modify .rpy scripts in the project directory
@@ -59,5 +59,5 @@ Only tested on macOS. Should be adaptable to other platforms with minor changes.
 7. Run `make dist` to create mod files that can be installed into a preexisting install of the game
 
 [latest]: https://github.com/sargunv/7kpp-mod/releases/latest
-[sdk]: https://www.renpy.org/release/7.0
+[sdk]: https://www.renpy.org/release/7.4.11
 [7kpp]: https://azalynestudios.itch.io/seven-kingdoms-the-princess-problem
